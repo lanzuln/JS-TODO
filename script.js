@@ -1,100 +1,42 @@
-const form = document.querySelector("#todo-form");
+const list = document.querySelector("#todo_lists");
 const input = document.querySelector("#todo-input");
-const list = document.querySelector("#todo-list");
-const taskCount = document.querySelector("#task-count");
-const emptyMessage = document.querySelector("#empty-message");
-const clearCompletedButton = document.querySelector("#clear-completed");
+const add_todo = document.querySelector("#btn");
 
-let todos = [];
+let localTask = [];
 
-function renderTodos() {
-  list.innerHTML = "";
-
-  todos.forEach((todo) => {
-    const item = document.createElement("li");
-    item.className = "todo-item";
-
-    if (todo.completed) {
-      item.classList.add("completed");
-    }
-
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.checked = todo.completed;
-    checkbox.addEventListener("change", () => toggleTodo(todo.id));
-
-    const text = document.createElement("span");
-    text.className = "todo-text";
-    text.textContent = todo.text;
-
-    const deleteButton = document.createElement("button");
-    deleteButton.type = "button";
-    deleteButton.className = "delete-btn";
-    deleteButton.textContent = "Delete";
-    deleteButton.addEventListener("click", () => deleteTodo(todo.id));
-
-    item.append(checkbox, text, deleteButton);
-    list.appendChild(item);
-  });
-
-  updateTaskCount();
+//Set task to local storage
+const setTaskToLocal= (task) => {
+  return localStorage.setItem("ln-task", JSON.stringify(task));
 }
 
-function addTodo(text) {
-  const newTodo = {
-    id: Date.now(),
-    text: text,
-    completed: false
-  };
-
-  todos.push(newTodo);
-  renderTodos();
+//get task from local storage
+const getTaskFromLocal = () => {
+  return JSON.parse(localStorage.getItem("ln-task")) || [];
 }
 
-function toggleTodo(id) {
-  todos = todos.map((todo) => {
-    if (todo.id === id) {
-      return { ...todo, completed: !todo.completed };
-    }
+const addTodoList = (e) => {
+  e.preventDefault();
 
-    return todo;
-  });
+let userInput = input.value.trim();
 
-  renderTodos();
+  localTask = getTaskFromLocal();
+
+if(userInput.length !== 0) {
+
+  localTask.push(userInput);
+
+  setTaskToLocal(localTask);
+
+  // list.innerHTML += `<li>${userInput }</li>`
+  
+  const li = document.createElement("li");
+  li.innerHTML = userInput ;
+  list.append(li);
 }
+  
+  
 
-function deleteTodo(id) {
-  todos = todos.filter((todo) => todo.id !== id);
-  renderTodos();
 }
-
-function clearCompleted() {
-  todos = todos.filter((todo) => !todo.completed);
-  renderTodos();
-}
-
-function updateTaskCount() {
-  const incompleteTasks = todos.filter((todo) => !todo.completed).length;
-  const label = incompleteTasks === 1 ? "task" : "tasks";
-
-  taskCount.textContent = `${incompleteTasks} ${label} left`;
-  emptyMessage.classList.toggle("hidden", todos.length > 0);
-}
-
-form.addEventListener("submit", (event) => {
-  event.preventDefault();
-
-  const todoText = input.value.trim();
-
-  if (todoText === "") {
-    return;
-  }
-
-  addTodo(todoText);
-  input.value = "";
-  input.focus();
-});
-
-clearCompletedButton.addEventListener("click", clearCompleted);
-
-renderTodos();
+add_todo.addEventListener( 'click', (e) => {
+addTodoList(e);
+})

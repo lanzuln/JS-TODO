@@ -8,26 +8,19 @@
 </head>
 <body>
   <main class="app">
-    <section class="todo-panel">
+    <section class="todo-card">
       <div class="todo-left">
         <h1>Personal Task</h1>
-        <p class="intro">Add your task, mark it complete, or remove it when you are done.</p>
-
         <form id="todo-form" class="todo-form">
-          <input id="todo-input" type="text" placeholder="Add a new task..."autocomplete="off" >
-          <button type="submit">Add</button>
+        
+          <div>
+              <input id="todo-input" type="text" placeholder="Add a new task..." autocomplete="off">
+          <button type="submit" id="btn">Add</button>
+          </div>
+          <div>
+            <ul id="todo_lists"></ul>
+          </div>
         </form>
-
-        <div class="todo-meta">
-          <span id="task-count">0 tasks left</span>
-          <button id="clear-completed" type="button">Clear completed</button>
-        </div>
-      </div>
-
-      <div class="todo-right">
-        <h2>Tasks</h2>
-        <p id="empty-message" class="empty-message">No tasks yet. Add your first task </p>
-        <ul id="todo-list" class="todo-list"></ul>
       </div>
     </section>
   </main>
