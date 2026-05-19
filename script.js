@@ -14,6 +14,17 @@ const getTaskFromLocal = () => {
   return JSON.parse(localStorage.getItem("ln-task")) || [];
 }
 
+//ekhane local theke task niye aschi and show kortesi.
+const showTaskFromLocal = () => {
+  localTask = getTaskFromLocal();
+
+  localTask.forEach((task) => {
+    const li = document.createElement("li");
+    li.textContent = task;
+    list.append(li);
+  });
+}
+
 const addTodoList = (e) => {
   e.preventDefault();
 
@@ -23,6 +34,7 @@ let userInput = input.value.trim();
 
 if(userInput.length !== 0) {
 
+  //array modhhe push kore pore local e save korychi.
   localTask.push(userInput);
 
   setTaskToLocal(localTask);
@@ -30,13 +42,17 @@ if(userInput.length !== 0) {
   // list.innerHTML += `<li>${userInput }</li>`
   
   const li = document.createElement("li");
-  li.innerHTML = userInput ;
+  li.textContent = userInput ;
   list.append(li);
+  input.value = "";
 }
   
   
 
 }
+
 add_todo.addEventListener( 'click', (e) => {
 addTodoList(e);
 })
+
+showTaskFromLocal();
